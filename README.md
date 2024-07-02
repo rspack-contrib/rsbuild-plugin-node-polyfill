@@ -1,6 +1,6 @@
 # @rsbuild/plugin-node-polyfill
 
-An Rsbuild plugin to automatically inject node core libs polyfills into the browser side.
+An Rsbuild plugin to automatically inject Node core libs polyfills into the browser side.
 
 <p>
   <a href="https://npmjs.com/package/@rsbuild/plugin-node-polyfill">
