@@ -1,6 +1,6 @@
 # @rsbuild/plugin-node-polyfill
 
-An Rsbuild plugin to automatically inject Node core libs polyfills into the browser side.
+An Rsbuild plugin to automatically inject polyfills for [Node.js builtin modules](https://nodejs.org/api/modules.html#built-in-modules) into the browser side.
 
 <p>
   <a href="https://npmjs.com/package/@rsbuild/plugin-node-polyfill">
@@ -11,9 +11,9 @@ An Rsbuild plugin to automatically inject Node core libs polyfills into the brow
 
 ## When to use
 
-Normally, we don't need to use Node libs on the browser side. However, it is possible to use some Node libs when the code will run on both the Node side and the browser side, and Node Polyfill provides browser versions of polyfills for these Node libs.
+Normally, we don't need to use Node builtin modules on the browser side. However, it is possible to use some Node builtin modules when the code will run on both the Node side and the browser side, and this plugin provides browser versions of polyfills for these Node builtin modules.
 
-By using the Node Polyfill plugin, Node core libs polyfills are automatically injected into the browser-side, allowing you to use these modules on the browser side with confidence.
+By using the Node Polyfill plugin, polyfills for Node builtin modules are automatically injected into the browser-side, allowing you to use these modules on the browser side with confidence.
 
 ## Usage
 
