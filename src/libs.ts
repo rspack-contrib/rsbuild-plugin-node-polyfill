@@ -1,3 +1,7 @@
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+
 export const assert: string = require.resolve('assert/');
 export const buffer: string = require.resolve('buffer/');
 export const child_process = null;
