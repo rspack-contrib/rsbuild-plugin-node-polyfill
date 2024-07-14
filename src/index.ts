@@ -65,7 +65,7 @@ export function pluginNodePolyfill(
 		name: PLUGIN_NODE_POLYFILL_NAME,
 
 		setup(api) {
-			api.modifyBundlerChain(async (chain, { CHAIN_ID, isServer, bundler }) => {
+			api.modifyBundlerChain(async (chain, { isServer, bundler }) => {
 				// The server bundle does not require node polyfill
 				if (isServer) {
 					return;
@@ -77,7 +77,7 @@ export function pluginNodePolyfill(
 				const provideGlobals = await getProvideGlobals(options.globals);
 				if (Object.keys(provideGlobals).length) {
 					chain
-						.plugin(CHAIN_ID.PLUGIN.NODE_POLYFILL_PROVIDE)
+						.plugin('node-polyfill-provide')
 						.use(bundler.ProvidePlugin, [provideGlobals]);
 				}
 
