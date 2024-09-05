@@ -7,6 +7,7 @@ An Rsbuild plugin to automatically inject polyfills for [Node.js builtin modules
    <img src="https://img.shields.io/npm/v/@rsbuild/plugin-node-polyfill?style=flat-square&colorA=564341&colorB=EDED91" alt="npm version" />
   </a>
   <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square&colorA=564341&colorB=EDED91" alt="license" />
+  <a href="https://npmcharts.com/compare/@rsbuild/plugin-node-polyfill?minimal=true"><img src="https://img.shields.io/npm/dm/@rsbuild/plugin-node-polyfill.svg?style=flat-square&colorA=564341&colorB=EDED91" alt="downloads" /></a>
 </p>
 
 ## When to use
