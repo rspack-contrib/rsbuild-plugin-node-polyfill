@@ -160,6 +160,32 @@ pluginNodePolyfill({
 });
 ```
 
+### only
+
+Specify an array of modules for which polyfills should be injected. If this option is set, only the specified modules will be polyfilled. `only` is mutually exclusive with [`exclude`](#exclude).
+
+- **Type:** `string[]`
+- **Default:** `undefined`
+
+```ts
+pluginNodePolyfill({
+  only: ["buffer", "crypto"], // Only "buffer" and "crypto" modules will be polyfilled.
+});
+```
+
+### exclude
+
+Specify an array of modules for which polyfills should not be injected from the default. If this option is set, the specified modules will be excluded from polyfilled. `exclude` is mutually exclusive with [`only`](#only).
+
+- **Type:** `string[]`
+- **Default:** `undefined`
+
+```ts
+pluginNodePolyfill({
+  exclude: ["http", "https"], // All modules except "http" and "https" will be polyfilled.
+});
+```
+
 ## License
 
 [MIT](./LICENSE).

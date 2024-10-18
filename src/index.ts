@@ -16,19 +16,44 @@ export type PluginNodePolyfillOptions = {
 	 * }
 	 */
 	globals?: Globals;
-
 	/**
 	 * Whether to polyfill Node.js builtin modules starting with `node:`.
 	 * @see https://nodejs.org/api/esm.html#node-imports
 	 * @default true
 	 */
 	protocolImports?: boolean;
+	/**
+	 * Exclude certain modules to be polyfilled.
+	 * This option is mutually exclusive with {@link PluginNodePolyfillOptions.only | `only`}.
+	 * @default undefined
+	 */
+	exclude?: string[];
+	/**
+	 * Only include certain modules to be polyfilled.
+	 * This option is mutually exclusive with {@link PluginNodePolyfillOptions.exclude | `exclude`}.
+	 * @default undefined
+	 */
+	only?: string[];
 };
 
-const getResolveFallback = (protocolImports?: boolean) => {
+export const getResolveFallback = ({
+	protocolImports,
+	exclude,
+	only,
+}: Pick<PluginNodePolyfillOptions, 'protocolImports' | 'exclude' | 'only'>) => {
+	if (exclude && only) {
+		throw new Error('`only` is mutually exclusive with `exclude`.');
+	}
+
+	const resolvedNodeLibs = only
+		? only
+		: Object.keys(nodeLibs).filter((name) => {
+				return !(exclude || []).includes(name);
+			});
+
 	const fallback: Record<string, string | false> = {};
 
-	for (const name of Object.keys(nodeLibs)) {
+	for (const name of resolvedNodeLibs) {
 		const libPath = nodeLibs[name as keyof typeof nodeLibs];
 
 		fallback[name] = libPath ?? false;
@@ -41,7 +66,7 @@ const getResolveFallback = (protocolImports?: boolean) => {
 	return fallback;
 };
 
-const getProvideGlobals = async (globals?: Globals) => {
+export const getProvideGlobals = async (globals?: Globals) => {
 	const result: Record<string, string | string[]> = {};
 
 	if (globals?.Buffer !== false) {
@@ -59,7 +84,7 @@ export const PLUGIN_NODE_POLYFILL_NAME = 'rsbuild:node-polyfill';
 export function pluginNodePolyfill(
 	options: PluginNodePolyfillOptions = {},
 ): RsbuildPlugin {
-	const { protocolImports = true } = options;
+	const { protocolImports = true, only, exclude } = options;
 
 	return {
 		name: PLUGIN_NODE_POLYFILL_NAME,
@@ -72,7 +97,9 @@ export function pluginNodePolyfill(
 				}
 
 				// module polyfill
-				chain.resolve.fallback.merge(getResolveFallback(protocolImports));
+				chain.resolve.fallback.merge(
+					getResolveFallback({ protocolImports, only, exclude }),
+				);
 
 				const provideGlobals = await getProvideGlobals(options.globals);
 				if (Object.keys(provideGlobals).length) {
