@@ -24,7 +24,7 @@ export type PluginNodePolyfillOptions = {
 	protocolImports?: boolean;
 	/**
 	 * Exclude certain modules to be polyfilled.
-	 * This option is mutually exclusive with {@link PluginNodePolyfillOptions.only | `only`}.
+	 * This option is mutually exclusive with {@link PluginNodePolyfillOptions.include | `include`}.
 	 * @default undefined
 	 */
 	exclude?: string[];
@@ -33,20 +33,23 @@ export type PluginNodePolyfillOptions = {
 	 * This option is mutually exclusive with {@link PluginNodePolyfillOptions.exclude | `exclude`}.
 	 * @default undefined
 	 */
-	only?: string[];
+	include?: string[];
 };
 
 export const getResolveFallback = ({
 	protocolImports,
 	exclude,
-	only,
-}: Pick<PluginNodePolyfillOptions, 'protocolImports' | 'exclude' | 'only'>) => {
-	if (exclude && only) {
-		throw new Error('`only` is mutually exclusive with `exclude`.');
+	include,
+}: Pick<
+	PluginNodePolyfillOptions,
+	'protocolImports' | 'exclude' | 'include'
+>) => {
+	if (exclude && include) {
+		throw new Error('`include` is mutually exclusive with `exclude`.');
 	}
 
-	const resolvedNodeLibs = only
-		? only
+	const resolvedNodeLibs = include
+		? include
 		: Object.keys(nodeLibs).filter((name) => {
 				return !(exclude || []).includes(name);
 			});
@@ -84,7 +87,7 @@ export const PLUGIN_NODE_POLYFILL_NAME = 'rsbuild:node-polyfill';
 export function pluginNodePolyfill(
 	options: PluginNodePolyfillOptions = {},
 ): RsbuildPlugin {
-	const { protocolImports = true, only, exclude } = options;
+	const { protocolImports = true, include, exclude } = options;
 
 	return {
 		name: PLUGIN_NODE_POLYFILL_NAME,
@@ -98,7 +101,7 @@ export function pluginNodePolyfill(
 
 				// module polyfill
 				chain.resolve.fallback.merge(
-					getResolveFallback({ protocolImports, only, exclude }),
+					getResolveFallback({ protocolImports, include: include, exclude }),
 				);
 
 				const provideGlobals = await getProvideGlobals(options.globals);

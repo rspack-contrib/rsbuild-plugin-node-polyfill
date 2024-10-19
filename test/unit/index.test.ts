@@ -139,13 +139,13 @@ test('getResolveFallback', () => {
 		'fs',
 	);
 
-	expect(Object.keys(getResolveFallback({ only: ['fs'] }))).toStrictEqual([
+	expect(Object.keys(getResolveFallback({ include: ['fs'] }))).toStrictEqual([
 		'fs',
 	]);
 
 	expect(() =>
-		getResolveFallback({ only: ['fs'], exclude: ['path'] }),
+		getResolveFallback({ include: ['fs'], exclude: ['path'] }),
 	).toThrowErrorMatchingInlineSnapshot(
-		'[Error: `only` is mutually exclusive with `exclude`.]',
+		'[Error: `include` is mutually exclusive with `exclude`.]',
 	);
 });
