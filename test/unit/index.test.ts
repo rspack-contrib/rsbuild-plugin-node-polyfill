@@ -135,6 +135,13 @@ test('getResolveFallback', () => {
 		Object.keys(defaultFallback).length * 2,
 	);
 
+	const excludeFs = getResolveFallback({ exclude: ['fs'] });
+	expect(
+		Object.keys(defaultFallback).filter(
+			(k) => !Object.keys(excludeFs).includes(k),
+		),
+	).toStrictEqual(['fs']);
+
 	expect(Object.keys(getResolveFallback({ exclude: ['fs'] }))).not.toContain(
 		'fs',
 	);
