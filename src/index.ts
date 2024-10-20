@@ -1,4 +1,5 @@
 import type { RsbuildPlugin } from '@rsbuild/core';
+import { ProtocolImportsPlugin } from './ProtocolImportsPlugin.js';
 import * as nodeLibs from './libs.js';
 
 type Globals = {
@@ -112,9 +113,6 @@ export function pluginNodePolyfill(
 				}
 
 				if (protocolImports) {
-					const { ProtocolImportsPlugin } = await import(
-						'./ProtocolImportsPlugin.js'
-					);
 					chain.plugin('protocol-imports').use(ProtocolImportsPlugin);
 				}
 			});
