@@ -1,5 +1,15 @@
 import { expect, test } from 'vitest';
-import { getResolveFallback } from '../../src/index';
+import {
+	builtinMappingResolved,
+	getResolveFallback,
+	resolvePolyfill,
+} from '../../src/index';
+
+test('resolvePolyfill', () => {
+	expect(resolvePolyfill('fs', { fs: 'memfs' })).toBe('memfs');
+	expect(resolvePolyfill('fs')).toBe(null);
+	expect(resolvePolyfill('buffer')).toBe(builtinMappingResolved.buffer);
+});
 
 test('getResolveFallback', () => {
 	const defaultFallback = getResolveFallback({});
@@ -149,6 +159,12 @@ test('getResolveFallback', () => {
 	expect(Object.keys(getResolveFallback({ include: ['fs'] }))).toStrictEqual([
 		'fs',
 	]);
+
+	const overrides = getResolveFallback({ overrides: { fs: 'memfs' } });
+	expect(overrides.fs).toStrictEqual('memfs');
+	expect({ ...overrides, fs: defaultFallback.fs }).toStrictEqual(
+		defaultFallback,
+	);
 
 	expect(() =>
 		getResolveFallback({ include: ['fs'], exclude: ['path'] }),

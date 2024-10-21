@@ -186,6 +186,22 @@ pluginNodePolyfill({
 });
 ```
 
+### overrides
+
+Override the default polyfills for specific modules.
+
+- **Type:** `Record<string, string>`
+- **Default:** `{}`
+
+```ts
+pluginNodePolyfill({
+  overrides: {
+    fs: 'memfs',
+  },
+});
+```
+
+
 ## License
 
 [MIT](./LICENSE).
