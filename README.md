@@ -28,11 +28,11 @@ Add plugin to your `rsbuild.config.ts`:
 
 ```ts
 // rsbuild.config.ts
-import { pluginNodePolyfill } from "@rsbuild/plugin-node-polyfill";
+import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill'
 
 export default {
   plugins: [pluginNodePolyfill()],
-};
+}
 ```
 
 ## Node Polyfills
@@ -47,7 +47,7 @@ When you use the above global variables in your code, the corresponding polyfill
 For instance, the following code would inject the `Buffer` polyfill:
 
 ```ts
-const bufferData = Buffer.from("abc");
+const bufferData = Buffer.from('abc')
 ```
 
 You can disable this behavior through the `globals` option of the plugin:
@@ -58,7 +58,7 @@ pluginNodePolyfill({
     Buffer: false,
     process: false,
   },
-});
+})
 ```
 
 ### Modules
@@ -95,9 +95,9 @@ pluginNodePolyfill({
 When the above module is referenced in code via import / require syntax, the corresponding polyfill will be injected.
 
 ```ts
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer'
 
-const bufferData = Buffer.from("abc");
+const bufferData = Buffer.from('abc')
 ```
 
 ### Fallbacks
@@ -116,9 +116,9 @@ const bufferData = Buffer.from("abc");
 Currently there is no polyfill for the above modules on the browser side, so when you import the above modules, it will automatically fallback to an empty object.
 
 ```ts
-import fs from "fs";
+import fs from 'fs'
 
-console.log(fs); // -> {}
+console.log(fs) // -> {}
 ```
 
 ## Options
@@ -131,9 +131,9 @@ Used to specify whether to inject polyfills for global variables.
 
 ```ts
 type Globals = {
-  process?: boolean;
-  Buffer?: boolean;
-};
+  process?: boolean
+  Buffer?: boolean
+}
 ```
 
 - **Default:**
@@ -142,7 +142,7 @@ type Globals = {
 const defaultGlobals = {
   Buffer: true,
   process: true,
-};
+}
 ```
 
 ### protocolImports
@@ -157,7 +157,7 @@ For example, if you disable `protocolImports`, modules such as `node:path`, `nod
 ```ts
 pluginNodePolyfill({
   protocolImports: false,
-});
+})
 ```
 
 ### include
@@ -169,8 +169,8 @@ Specify an array of modules for which polyfills should be injected. If this opti
 
 ```ts
 pluginNodePolyfill({
-  include: ["buffer", "crypto"], // Only "buffer" and "crypto" modules will be polyfilled.
-});
+  include: ['buffer', 'crypto'], // Only "buffer" and "crypto" modules will be polyfilled.
+})
 ```
 
 ### exclude
@@ -182,9 +182,29 @@ Specify an array of modules for which polyfills should not be injected from the 
 
 ```ts
 pluginNodePolyfill({
-  exclude: ["http", "https"], // All modules except "http" and "https" will be polyfilled.
-});
+  exclude: ['http', 'https'], // All modules except "http" and "https" will be polyfilled.
+})
 ```
+
+### overrides
+
+Override the default polyfills for specific modules.
+
+- **Type:** `Record<string, string>`
+- **Default:** `{}`
+
+```ts
+pluginNodePolyfill({
+  overrides: {
+    fs: 'memfs',
+  },
+})
+```
+
+## Exported variables
+
+- `builtinMappingResolved`: A map of Node.js builtin modules to their resolved corresponding polyfills modules.
+- `resolvedPolyfillToModules`: A map of resolved polyfill modules to the polyfill modules before resolving.
 
 ## License
 

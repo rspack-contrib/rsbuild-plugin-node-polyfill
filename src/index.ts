@@ -1,6 +1,6 @@
 import type { RsbuildPlugin } from '@rsbuild/core';
 import { ProtocolImportsPlugin } from './ProtocolImportsPlugin.js';
-import * as nodeLibs from './libs.js';
+import { builtinMappingResolved } from './libs.js';
 
 type Globals = {
 	process?: boolean;
@@ -35,15 +35,32 @@ export type PluginNodePolyfillOptions = {
 	 * @default undefined
 	 */
 	include?: string[];
+	/**
+	 * Override the default polyfills for specific modules.
+	 * @default undefined
+	 */
+	overrides?: Record<string, string | false>;
+};
+
+export const resolvePolyfill = (
+	libPath: string,
+	overrides?: PluginNodePolyfillOptions['overrides'],
+) => {
+	if (overrides?.[libPath] !== undefined) {
+		return overrides[libPath];
+	}
+
+	return builtinMappingResolved[libPath as keyof typeof builtinMappingResolved];
 };
 
 export const getResolveFallback = ({
 	protocolImports,
 	exclude,
 	include,
+	overrides,
 }: Pick<
 	PluginNodePolyfillOptions,
-	'protocolImports' | 'exclude' | 'include'
+	'protocolImports' | 'exclude' | 'include' | 'overrides'
 >) => {
 	if (exclude && include) {
 		throw new Error('`include` is mutually exclusive with `exclude`.');
@@ -51,15 +68,14 @@ export const getResolveFallback = ({
 
 	const resolvedNodeLibs = include
 		? include
-		: Object.keys(nodeLibs).filter((name) => {
+		: Object.keys(builtinMappingResolved).filter((name) => {
 				return !(exclude || []).includes(name);
 			});
 
 	const fallback: Record<string, string | false> = {};
 
 	for (const name of resolvedNodeLibs) {
-		const libPath = nodeLibs[name as keyof typeof nodeLibs];
-
+		const libPath = resolvePolyfill(name, overrides);
 		fallback[name] = libPath ?? false;
 
 		if (protocolImports) {
@@ -70,14 +86,17 @@ export const getResolveFallback = ({
 	return fallback;
 };
 
-export const getProvideGlobals = async (globals?: Globals) => {
+export const getProvideGlobals = async (
+	globals?: Globals,
+	overrides?: PluginNodePolyfillOptions['overrides'],
+) => {
 	const result: Record<string, string | string[]> = {};
 
 	if (globals?.Buffer !== false) {
-		result.Buffer = [nodeLibs.buffer, 'Buffer'];
+		result.Buffer = [resolvePolyfill('buffer', overrides) as string, 'Buffer'];
 	}
 	if (globals?.process !== false) {
-		result.process = [nodeLibs.process];
+		result.process = [resolvePolyfill('process', overrides) as string];
 	}
 
 	return result;
@@ -88,7 +107,7 @@ export const PLUGIN_NODE_POLYFILL_NAME = 'rsbuild:node-polyfill';
 export function pluginNodePolyfill(
 	options: PluginNodePolyfillOptions = {},
 ): RsbuildPlugin {
-	const { protocolImports = true, include, exclude } = options;
+	const { protocolImports = true, include, exclude, overrides } = options;
 
 	return {
 		name: PLUGIN_NODE_POLYFILL_NAME,
@@ -102,10 +121,19 @@ export function pluginNodePolyfill(
 
 				// module polyfill
 				chain.resolve.fallback.merge(
-					getResolveFallback({ protocolImports, include: include, exclude }),
+					getResolveFallback({
+						protocolImports,
+						include: include,
+						exclude,
+						overrides,
+					}),
 				);
 
-				const provideGlobals = await getProvideGlobals(options.globals);
+				const provideGlobals = await getProvideGlobals(
+					options.globals,
+					overrides,
+				);
+
 				if (Object.keys(provideGlobals).length) {
 					chain
 						.plugin('node-polyfill-provide')
@@ -119,3 +147,8 @@ export function pluginNodePolyfill(
 		},
 	};
 }
+
+export {
+	builtinMappingResolved,
+	resolvedPolyfillToModules,
+} from './libs.js';

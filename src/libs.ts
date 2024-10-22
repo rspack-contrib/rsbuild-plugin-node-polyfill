@@ -2,51 +2,53 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 
-export const assert: string = require.resolve('assert/');
-export const buffer: string = require.resolve('buffer/');
-export const child_process = null;
-export const cluster = null;
-export const console: string = require.resolve('console-browserify');
-export const constants: string = require.resolve('constants-browserify');
-export const crypto: string = require.resolve('crypto-browserify');
-export const dgram = null;
-export const dns = null;
-export const domain: string = require.resolve('domain-browser');
-export const events: string = require.resolve('events/');
-export const fs = null;
-export const http: string = require.resolve('stream-http');
-export const https: string = require.resolve('https-browserify');
-export const module = null;
-export const net = null;
-export const os: string = require.resolve('os-browserify/browser.js');
-export const path: string = require.resolve('path-browserify');
-export const punycode: string = require.resolve('punycode/');
-export const process: string = require.resolve('process/browser.js');
-export const querystring: string = require.resolve('querystring-es3/');
-export const readline = null;
-export const repl = null;
-export const stream: string = require.resolve('stream-browserify');
-export const _stream_duplex: string = require.resolve(
-	'readable-stream/lib/_stream_duplex.js',
+export const builtinMappingResolved = {
+	assert: require.resolve('assert/'),
+	buffer: require.resolve('buffer/'),
+	child_process: null,
+	cluster: null,
+	console: require.resolve('console-browserify'),
+	constants: require.resolve('constants-browserify'),
+	crypto: require.resolve('crypto-browserify'),
+	dgram: null,
+	dns: null,
+	domain: require.resolve('domain-browser'),
+	events: require.resolve('events/'),
+	fs: null,
+	http: require.resolve('stream-http'),
+	https: require.resolve('https-browserify'),
+	module: null,
+	net: null,
+	os: require.resolve('os-browserify/browser.js'),
+	path: require.resolve('path-browserify'),
+	punycode: require.resolve('punycode/'),
+	process: require.resolve('process/browser.js'),
+	querystring: require.resolve('querystring-es3/'),
+	readline: null,
+	repl: null,
+	stream: require.resolve('stream-browserify'),
+	_stream_duplex: require.resolve('readable-stream/lib/_stream_duplex.js'),
+	_stream_passthrough: require.resolve(
+		'readable-stream/lib/_stream_passthrough.js',
+	),
+	_stream_readable: require.resolve('readable-stream/lib/_stream_readable.js'),
+	_stream_transform: require.resolve(
+		'readable-stream/lib/_stream_transform.js',
+	),
+	_stream_writable: require.resolve('readable-stream/lib/_stream_writable.js'),
+	string_decoder: require.resolve('string_decoder/'),
+	sys: require.resolve('util/util.js'),
+	timers: require.resolve('timers-browserify'),
+	tls: null,
+	tty: require.resolve('tty-browserify'),
+	url: require.resolve('url/'),
+	util: require.resolve('util/util.js'),
+	vm: require.resolve('vm-browserify'),
+	zlib: require.resolve('browserify-zlib'),
+} as const;
+
+export const resolvedPolyfillToModules = Object.fromEntries(
+	Object.entries(builtinMappingResolved)
+		.filter(([key]) => key !== null)
+		.map(([key, value]) => [value, key]),
 );
-export const _stream_passthrough: string = require.resolve(
-	'readable-stream/lib/_stream_passthrough.js',
-);
-export const _stream_readable: string = require.resolve(
-	'readable-stream/lib/_stream_readable.js',
-);
-export const _stream_transform: string = require.resolve(
-	'readable-stream/lib/_stream_transform.js',
-);
-export const _stream_writable: string = require.resolve(
-	'readable-stream/lib/_stream_writable.js',
-);
-export const string_decoder: string = require.resolve('string_decoder/');
-export const sys: string = require.resolve('util/util.js');
-export const timers: string = require.resolve('timers-browserify');
-export const tls = null;
-export const tty: string = require.resolve('tty-browserify');
-export const url: string = require.resolve('url/');
-export const util: string = require.resolve('util/util.js');
-export const vm: string = require.resolve('vm-browserify');
-export const zlib: string = require.resolve('browserify-zlib');
