@@ -209,7 +209,3 @@ pluginNodePolyfill({
 ## License
 
 [MIT](./LICENSE).
-
-## License
-
-[MIT](./LICENSE).
