@@ -73,7 +73,7 @@
 		"vitest": "^2.1.4"
 	},
 	"peerDependencies": {
-		"@rsbuild/core": "1.x || ^1.0.1-beta.0"
+		"@rsbuild/core": "1.x"
 	},
 	"peerDependenciesMeta": {
 		"@rsbuild/core": {
