@@ -87,6 +87,9 @@ importers:
       '@rsbuild/core':
         specifier: ^1.0.19
         version: 1.0.19
+      '@rslib/core':
+        specifier: ^0.0.16
+        version: 0.0.16(typescript@5.6.3)
       '@types/node':
         specifier: ^22.8.6
         version: 22.8.6
@@ -573,6 +576,19 @@ packages:
     resolution: {integrity: sha512-63DAPvYfRBoUrb51BUPb4Xoqx48MHQ0yLcmnCiqZGpMeKYtTWzD+lyx5va4cr9qvdnIFTAX2BMuYC/j5iSrtTA==}
     engines: {node: '>=16.7.0'}
     hasBin: true
+
+  '@rslib/core@0.0.16':
+    resolution: {integrity: sha512-g6IFUZW0K7DDKK/27kF7DOKhP5JIqZoIVAU0c9DZffRE3Pw9sWTyEyVN/kaEnp5k3gaeQTBpcV9nSW+41B2slQ==}
+    engines: {node: '>=16.0.0'}
+    hasBin: true
+    peerDependencies:
+      '@microsoft/api-extractor': ^7
+      typescript: ^5
+    peerDependenciesMeta:
+      '@microsoft/api-extractor':
+        optional: true
+      typescript:
+        optional: true
 
   '@rspack/binding-darwin-arm64@1.0.14':
     resolution: {integrity: sha512-dHvlF6T6ctThGDIdvkSdacroA1xlCxfteuppBj8BX/UxzLPr4xsaEtNilfJmFfd2/J02UQyTQauN/9EBuA+YkA==}
@@ -1255,6 +1271,19 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
+  rsbuild-plugin-dts@0.0.16:
+    resolution: {integrity: sha512-Yfc7h1cTTp55baLgS6DVa3mlLaFlNfoUVmcX7hCH1BT1fNbMabnngvXDtfqJpP62QyXcfrXNmcW0fznTYKgKmA==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      '@microsoft/api-extractor': ^7
+      '@rsbuild/core': 1.x
+      typescript: ^5
+    peerDependenciesMeta:
+      '@microsoft/api-extractor':
+        optional: true
+      typescript:
+        optional: true
+
   safe-buffer@5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
 
@@ -1358,6 +1387,10 @@ packages:
 
   tinyexec@0.3.1:
     resolution: {integrity: sha512-WiCJLEECkO18gwqIp6+hJg0//p23HXp4S+gGtAKu3mI2F2/sXC4FvHvXvB0zJVVaTPhx1/tOwdbRsa1sOBIKqQ==}
+
+  tinyglobby@0.2.10:
+    resolution: {integrity: sha512-Zc+8eJlFMvgatPZTl6A9L/yht8QqdmUNtURHaKZLmKBE12hNPSrqNkUp2cs3M/UKmNVVAMFQYSjYIVHDjW5zew==}
+    engines: {node: '>=12.0.0'}
 
   tinyglobby@0.2.9:
     resolution: {integrity: sha512-8or1+BGEdk1Zkkw2ii16qSS7uVrQJPre5A9o/XkWPATkk23FZh/15BKFxPnlTy6vkljZxLqYCzzBMj30ZrSvjw==}
@@ -1807,6 +1840,14 @@ snapshots:
       core-js: 3.38.1
     optionalDependencies:
       fsevents: 2.3.3
+
+  '@rslib/core@0.0.16(typescript@5.6.3)':
+    dependencies:
+      '@rsbuild/core': 1.0.19
+      rsbuild-plugin-dts: 0.0.16(@rsbuild/core@1.0.19)(typescript@5.6.3)
+      tinyglobby: 0.2.10
+    optionalDependencies:
+      typescript: 5.6.3
 
   '@rspack/binding-darwin-arm64@1.0.14':
     optional: true
@@ -2573,6 +2614,15 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.24.0
       fsevents: 2.3.3
 
+  rsbuild-plugin-dts@0.0.16(@rsbuild/core@1.0.19)(typescript@5.6.3):
+    dependencies:
+      '@rsbuild/core': 1.0.19
+      magic-string: 0.30.12
+      picocolors: 1.1.1
+      tinyglobby: 0.2.10
+    optionalDependencies:
+      typescript: 5.6.3
+
   safe-buffer@5.1.2: {}
 
   safe-buffer@5.2.1: {}
@@ -2687,6 +2737,11 @@ snapshots:
   tinybench@2.9.0: {}
 
   tinyexec@0.3.1: {}
+
+  tinyglobby@0.2.10:
+    dependencies:
+      fdir: 6.4.2(picomatch@4.0.2)
+      picomatch: 4.0.2
 
   tinyglobby@0.2.9:
     dependencies:
