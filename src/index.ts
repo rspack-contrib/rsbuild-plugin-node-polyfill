@@ -41,10 +41,12 @@ export type PluginNodePolyfillOptions = {
 	 */
 	overrides?: Record<string, string | false>;
 	/**
-	 * Polyfill the server-side code as well.
+	 * By default, the plugin only polyfills the browser-side code.
+	 * If you want to polyfill the server-side code as well (when `output.target` is `node`),
+	 * you can set the `force` option to `true`.
 	 * @default false
 	 */
-	polyfillServer?: boolean;
+	force?: boolean;
 };
 
 export const resolvePolyfill = (
@@ -117,7 +119,7 @@ export function pluginNodePolyfill(
 		include,
 		exclude,
 		overrides,
-		polyfillServer = false,
+		force = false,
 	} = options;
 
 	return {
@@ -126,7 +128,7 @@ export function pluginNodePolyfill(
 		setup(api) {
 			api.modifyBundlerChain(async (chain, { isServer, bundler }) => {
 				// The server bundle does not require node polyfill
-				if (isServer && !polyfillServer) {
+				if (isServer && !force) {
 					return;
 				}
 
