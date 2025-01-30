@@ -6,19 +6,18 @@ import {
 	resolvePolyfill,
 } from '../../src/index';
 
-test('resolvePolyfill', async (t) => {
+test('resolvePolyfill', async () => {
 	assert.equal(resolvePolyfill('fs', { fs: 'memfs' }), 'memfs');
 	assert.equal(resolvePolyfill('fs'), null);
 	assert.equal(resolvePolyfill('buffer'), builtinMappingResolved.buffer);
 });
 
-test('getResolveFallback', async (t) => {
+test('getResolveFallback', async () => {
 	const defaultFallback = getResolveFallback({});
 	const withProtocolImportsFallback = getResolveFallback({
 		protocolImports: true,
 	});
 
-	// 替换快照测试为实际的数组比较
 	assert.deepEqual(Object.keys(defaultFallback), [
 		'assert',
 		'buffer',
