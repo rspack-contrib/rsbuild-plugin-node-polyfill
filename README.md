@@ -201,6 +201,19 @@ pluginNodePolyfill({
 })
 ```
 
+### polyfillServer
+
+Polyfill the server-side code as well.
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+```ts
+pluginNodePolyfill({
+  polyfillServer: true,
+})
+```
+
 ## Exported variables
 
 - `builtinMappingResolved`: A map of Node.js builtin modules to their resolved corresponding polyfills modules.
