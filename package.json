@@ -23,7 +23,7 @@
 		"prepare": "simple-git-hooks && npm run build",
 		"test": "pnpm run /^test:/",
 		"test:e2e": "playwright test",
-		"test:unit": "vitest run",
+		"test:unit": "tsx --test test/unit/index.test.ts",
 		"bump": "npx bumpp"
 	},
 	"simple-git-hooks": {
@@ -68,8 +68,8 @@
 		"nano-staged": "^0.8.0",
 		"playwright": "^1.49.0",
 		"simple-git-hooks": "^2.11.1",
-		"typescript": "^5.7.2",
-		"vitest": "^2.1.6"
+		"tsx": "^4.19.2",
+		"typescript": "^5.7.2"
 	},
 	"peerDependencies": {
 		"@rsbuild/core": "1.x"
