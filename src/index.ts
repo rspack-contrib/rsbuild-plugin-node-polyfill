@@ -40,6 +40,11 @@ export type PluginNodePolyfillOptions = {
 	 * @default undefined
 	 */
 	overrides?: Record<string, string | false>;
+	/**
+	 * Polyfill the server-side code as well.
+	 * @default false
+	 */
+	polyfillServer?: boolean;
 };
 
 export const resolvePolyfill = (
@@ -107,7 +112,13 @@ export const PLUGIN_NODE_POLYFILL_NAME = 'rsbuild:node-polyfill';
 export function pluginNodePolyfill(
 	options: PluginNodePolyfillOptions = {},
 ): RsbuildPlugin {
-	const { protocolImports = true, include, exclude, overrides } = options;
+	const {
+		protocolImports = true,
+		include,
+		exclude,
+		overrides,
+		polyfillServer = false,
+	} = options;
 
 	return {
 		name: PLUGIN_NODE_POLYFILL_NAME,
@@ -115,7 +126,7 @@ export function pluginNodePolyfill(
 		setup(api) {
 			api.modifyBundlerChain(async (chain, { isServer, bundler }) => {
 				// The server bundle does not require node polyfill
-				if (isServer) {
+				if (isServer && !polyfillServer) {
 					return;
 				}
 
