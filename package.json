@@ -62,8 +62,8 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@playwright/test": "^1.49.0",
-		"@rsbuild/core": "^1.1.6",
-		"@rslib/core": "^0.1.1",
+		"@rsbuild/core": "^1.2.3",
+		"@rslib/core": "^0.4.0",
 		"@types/node": "^22.10.1",
 		"nano-staged": "^0.8.0",
 		"playwright": "^1.49.0",
