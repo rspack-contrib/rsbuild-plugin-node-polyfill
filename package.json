@@ -23,7 +23,7 @@
 		"prepare": "simple-git-hooks && npm run build",
 		"test": "pnpm run /^test:/",
 		"test:e2e": "playwright test",
-		"test:unit": "tsx --test test/unit/index.test.ts",
+		"test:unit": "rstest run",
 		"bump": "npx bumpp"
 	},
 	"simple-git-hooks": {
@@ -64,6 +64,7 @@
 		"@playwright/test": "^1.52.0",
 		"@rsbuild/core": "^1.3.22",
 		"@rslib/core": "^0.9.1",
+		"@rstest/core": "https://pkg.pr.new/web-infra-dev/rstest/@rstest/core@1b40438",
 		"@types/node": "^22.15.29",
 		"nano-staged": "^0.8.0",
 		"playwright": "^1.52.0",

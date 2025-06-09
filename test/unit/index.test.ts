@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict';
-import test from 'node:test';
+import { assert, test } from '@rstest/core';
 import {
 	builtinMappingResolved,
 	getResolveFallback,
@@ -165,6 +164,6 @@ test('getResolveFallback', async () => {
 
 	assert.throws(
 		() => getResolveFallback({ include: ['fs'], exclude: ['path'] }),
-		{ message: '`include` is mutually exclusive with `exclude`.' },
+		'`include` is mutually exclusive with `exclude`.',
 	);
 });
