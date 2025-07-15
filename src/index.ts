@@ -101,9 +101,13 @@ export const getProvideGlobals = async (
 
 	if (globals?.Buffer !== false) {
 		result.Buffer = [resolvePolyfill('buffer', overrides) as string, 'Buffer'];
+		result['global.Buffer'] = result.Buffer;
+		result['globalThis.Buffer'] = result.Buffer;
 	}
 	if (globals?.process !== false) {
 		result.process = [resolvePolyfill('process', overrides) as string];
+		result['global.process'] = result.process;
+		result['globalThis.process'] = result.process;
 	}
 
 	return result;
