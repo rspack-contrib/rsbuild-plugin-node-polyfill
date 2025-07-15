@@ -3,4 +3,7 @@ import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
 
 export default defineConfig({
 	plugins: [pluginNodePolyfill()],
+	server: {
+		port: 3500,
+	},
 });
