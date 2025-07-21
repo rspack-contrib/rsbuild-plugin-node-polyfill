@@ -1,6 +1,6 @@
 import type { RsbuildPlugin } from '@rsbuild/core';
-import { ProtocolImportsPlugin } from './ProtocolImportsPlugin.js';
-import { builtinMappingResolved } from './libs.js';
+import { ProtocolImportsPlugin } from './ProtocolImportsPlugin';
+import { builtinMappingResolved } from './libs';
 
 type Globals = {
 	process?: boolean;
