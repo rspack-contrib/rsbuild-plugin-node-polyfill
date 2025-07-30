@@ -19,5 +19,11 @@ test('should polyfill global Buffer as expected', async ({ page }) => {
 	const testBuffer1 = page.locator('#test-buffer1');
 	await expect(testBuffer1).toHaveText('979899');
 
+	const testBuffer2 = page.locator('#test-buffer2');
+	await expect(testBuffer2).toHaveText('979899');
+
+	const testBuffer3 = page.locator('#test-buffer3');
+	await expect(testBuffer3).toHaveText('979899');
+
 	await server.close();
 });
