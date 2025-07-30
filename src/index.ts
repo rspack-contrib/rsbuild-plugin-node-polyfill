@@ -2,9 +2,42 @@ import type { RsbuildPlugin } from '@rsbuild/core';
 import { ProtocolImportsPlugin } from './ProtocolImportsPlugin.js';
 import { builtinMappingResolved } from './libs.js';
 
+type GlobalsOption = {
+	/**
+	 * Whether to inject the polyfill for direct identifier usage,
+	 * e.g. `Buffer` or `process` (bare usage without any object prefix).
+	 * @default true
+	 */
+	bare?: boolean;
+	/**
+	 * Whether to inject the polyfill for usage via the `global` object,
+	 * e.g. `global.Buffer` or `global.process`.
+	 * @default false
+	 */
+	global?: boolean;
+	/**
+	 * Whether to inject the polyfill for usage via the `globalThis` object,
+	 * e.g. `globalThis.Buffer` or `globalThis.process`.
+	 * @default false
+	 */
+	globalThis?: boolean;
+};
+
 type Globals = {
-	process?: boolean;
-	Buffer?: boolean;
+	/**
+	 * Configure polyfill injection for the `process` global variable.
+	 * - Set to `false` to disable all polyfills for `process`.
+	 * - Set to `true` to enable only bare identifier polyfill (e.g. `process`).
+	 * - Or provide a {@link GlobalsOption} object for fine-grained control.
+	 */
+	process?: boolean | GlobalsOption;
+	/**
+	 * Configure polyfill injection for the `Buffer` global variable.
+	 * - Set to `false` to disable all polyfills for `Buffer`.
+	 * - Set to `true` to enable only bare identifier polyfill (e.g. `Buffer`).
+	 * - Or provide a {@link GlobalsOption} object for fine-grained control.
+	 */
+	Buffer?: boolean | GlobalsOption;
 };
 
 export type PluginNodePolyfillOptions = {
@@ -12,8 +45,16 @@ export type PluginNodePolyfillOptions = {
 	 * Whether to provide polyfill of globals.
 	 * @default
 	 * {
-	 *   Buffer: true,
-	 *   process: true,
+	 *   Buffer: {
+	 *     bare: true,
+	 *     global: false,
+	 *  	 globalThis: false,
+	 *   }
+	 *   process: {
+	 *     bare: true,
+	 *  	 global: false,
+	 * 	   globalThis: false,
+	 *   }
 	 * }
 	 */
 	globals?: Globals;
@@ -94,20 +135,52 @@ export const getResolveFallback = ({
 };
 
 export const getProvideGlobals = async (
-	globals?: Globals,
+	globals: Globals = {},
 	overrides?: PluginNodePolyfillOptions['overrides'],
 ) => {
 	const result: Record<string, string | string[]> = {};
+	const defaultOptions: GlobalsOption = {
+		bare: true,
+		global: false,
+		globalThis: false,
+	};
 
-	if (globals?.Buffer !== false) {
-		result.Buffer = [resolvePolyfill('buffer', overrides) as string, 'Buffer'];
-		result['global.Buffer'] = result.Buffer;
-		result['globalThis.Buffer'] = result.Buffer;
+	// Buffer polyfill
+	if (globals.Buffer !== false) {
+		const options =
+			typeof globals.Buffer === 'object'
+				? { ...defaultOptions, ...globals.Buffer }
+				: { ...defaultOptions };
+		const value = [resolvePolyfill('buffer', overrides) as string, 'Buffer'];
+
+		if (options.bare) {
+			result.Buffer = value;
+		}
+		if (options.global) {
+			result['global.Buffer'] = value;
+		}
+		if (options.globalThis) {
+			result['globalThis.Buffer'] = value;
+		}
 	}
-	if (globals?.process !== false) {
-		result.process = [resolvePolyfill('process', overrides) as string];
-		result['global.process'] = result.process;
-		result['globalThis.process'] = result.process;
+
+	// process polyfill
+	if (globals.process !== false) {
+		const options =
+			typeof globals.process === 'object'
+				? { ...defaultOptions, ...globals.process }
+				: { ...defaultOptions };
+		const value = [resolvePolyfill('process', overrides) as string];
+
+		if (options.bare) {
+			result.process = value;
+		}
+		if (options.global) {
+			result['global.process'] = value;
+		}
+		if (options.globalThis) {
+			result['globalThis.process'] = value;
+		}
 	}
 
 	return result;

@@ -130,13 +130,53 @@ Used to specify whether to inject polyfills for global variables.
 - **Type:**
 
 ```ts
+type GlobalsOption = {
+  /**
+   * Whether to inject the polyfill for direct identifier usage,
+   * e.g. `Buffer` or `process` (bare usage without any object prefix).
+   * @default true
+   */
+  bare?: boolean;
+  /**
+   * Whether to inject the polyfill for usage via the `global` object,
+   * e.g. `global.Buffer` or `global.process`.
+   * @default false
+   */
+  global?: boolean;
+  /**
+   * Whether to inject the polyfill for usage via the `globalThis` object,
+   * e.g. `globalThis.Buffer` or `globalThis.process`.
+   * @default false
+   */
+  globalThis?: boolean;
+};
+
 type Globals = {
-  process?: boolean;
-  Buffer?: boolean;
+  process?: boolean | GlobalsOption;
+  Buffer?: boolean | GlobalsOption;
 };
 ```
 
 - **Default:**
+
+```ts
+const defaultGlobals = {
+  Buffer: {
+    bare: true,
+    global: false,
+    globalThis: false,
+  },
+  process: {
+    bare: true,
+    global: false,
+    globalThis: false,
+  },
+};
+```
+
+### protocolImports
+
+Whether to polyfill Node.js builtin modules starting with `node:`.
 
 ```ts
 const defaultGlobals = {
