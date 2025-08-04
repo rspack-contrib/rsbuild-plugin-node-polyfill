@@ -1,6 +1,6 @@
 {
 	"name": "@rsbuild/plugin-node-polyfill",
-	"version": "1.4.0",
+	"version": "1.4.1",
 	"repository": "https://github.com/rspack-contrib/rsbuild-plugin-node-polyfill",
 	"license": "MIT",
 	"type": "module",
