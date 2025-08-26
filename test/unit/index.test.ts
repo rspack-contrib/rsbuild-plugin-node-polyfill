@@ -54,6 +54,7 @@ test('getResolveFallback', async () => {
 		'tty',
 		'url',
 		'util',
+		'v8',
 		'vm',
 		'zlib',
 	]);
@@ -131,6 +132,8 @@ test('getResolveFallback', async () => {
 		'node:url',
 		'util',
 		'node:util',
+		'v8',
+		'node:v8',
 		'vm',
 		'node:vm',
 		'zlib',
