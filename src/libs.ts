@@ -43,6 +43,7 @@ export const builtinMappingResolved = {
 	tty: require.resolve('tty-browserify'),
 	url: require.resolve('url/'),
 	util: require.resolve('util/util.js'),
+	v8: null,
 	vm: require.resolve('vm-browserify'),
 	zlib: require.resolve('browserify-zlib'),
 } as const;

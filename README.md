@@ -112,6 +112,7 @@ const bufferData = Buffer.from("abc");
 - `readline`
 - `repl`
 - `tls`
+- `v8`
 
 Currently there is no polyfill for the above modules on the browser side, so when you import the above modules, it will automatically fallback to an empty object.
 
