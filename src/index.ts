@@ -1,5 +1,4 @@
 import type { RsbuildPlugin } from '@rsbuild/core';
-import { ProtocolImportsPlugin } from './ProtocolImportsPlugin.js';
 import { builtinMappingResolved } from './libs.js';
 
 type GlobalsOption = {
@@ -203,7 +202,7 @@ export function pluginNodePolyfill(
 		name: PLUGIN_NODE_POLYFILL_NAME,
 
 		setup(api) {
-			api.modifyBundlerChain(async (chain, { isServer, bundler }) => {
+			api.modifyBundlerChain(async (chain, { isServer, rspack }) => {
 				// The server bundle does not require node polyfill
 				if (isServer && !force) {
 					return;
@@ -227,11 +226,21 @@ export function pluginNodePolyfill(
 				if (Object.keys(provideGlobals).length) {
 					chain
 						.plugin('node-polyfill-provide')
-						.use(bundler.ProvidePlugin, [provideGlobals]);
+						.use(rspack.ProvidePlugin, [provideGlobals]);
 				}
 
+				// Remove the `node:` prefix
+				// see: https://github.com/webpack/webpack/issues/14166
 				if (protocolImports) {
-					chain.plugin('protocol-imports').use(ProtocolImportsPlugin);
+					const regex = /^node:/;
+					chain
+						.plugin('protocol-imports')
+						.use(rspack.NormalModuleReplacementPlugin, [
+							regex,
+							(resource) => {
+								resource.request = resource.request.replace(regex, '');
+							},
+						]);
 				}
 			});
 		},
